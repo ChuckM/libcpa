@@ -245,7 +245,7 @@ void gfx_drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,
       uint16_t color);
 void gfx_fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
 void gfx_init(int width, int height, 
-    void (*write_pixel)(uint16_t, uint16_t, uint16_t));
+    void (*write_pixel)(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t));
 
 void gfx_fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,
       int16_t delta, uint16_t color);
@@ -277,7 +277,7 @@ struct gfx_state {
     int16_t width, height; /* Actual screen sizes */
     int16_t _width, _height, cursor_x, cursor_y;
     uint16_t textcolor, textbgcolor;
-    void (*pixel_writer)(uint16_t, uint16_t, uint16_t);
+    void (*pixel_writer)(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t);
     uint8_t textsize, rotation;
     uint8_t wrap;
 };

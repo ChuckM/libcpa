@@ -20,7 +20,8 @@ struct gfx_state __gfx_state;
 
 void
 gfx_drawPixel(uint16_t x, uint16_t y, uint16_t color) {
-    (__gfx_state.pixel_writer)(x, y, color);
+    (__gfx_state.pixel_writer)(x, y, color, __gfx_state._width, 
+                                            __gfx_state._height);
 }
 
 #define true 1
@@ -32,7 +33,7 @@ gfx_drawPixel(uint16_t x, uint16_t y, uint16_t color) {
  */
 void
 gfx_init(int width, int height, 
-         void (*write_pixel)(uint16_t, uint16_t, uint16_t)) {
+         void (*write_pixel)(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t)) {
     __gfx_state._width    = width;
     __gfx_state.width    = width;
     __gfx_state.pixel_writer = write_pixel;
