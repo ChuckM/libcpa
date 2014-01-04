@@ -22,7 +22,7 @@
 
 /* These are the attributes we can fetch with pin_map() */
 enum PIN_ATTRIBUTE {
-    USART, APB_REG, APB_ENA, BIT, GPIO_ENA, IRQ, AF, GPIO
+    USART, APB_REG, APB_ENA, IRQ, AF
 };
 
 /*
@@ -406,137 +406,8 @@ uart_puts(int chan, const char *s) {
  * Prototypes for helper functions
  */
 
-static uint32_t pin_to_bit(enum GPIO_PORT_PIN pin);
-static uint32_t pin_to_enable(enum GPIO_PORT_PIN pin);
 static uint32_t pin_uart_attr(enum GPIO_PORT_PIN pin, int attr);
 static uint32_t pin_to_af(enum GPIO_PORT_PIN pin);
-static uint32_t pin_to_gpio(enum GPIO_PORT_PIN pin);
-
-/* A really simple one, this maps the name (like PA0) to the bit number
- * define like GPIO0.
- */
-static uint32_t
-pin_to_bit(enum GPIO_PORT_PIN pin) {
-    switch (pin) {
-        case PA0:
-        case PE0: return GPIO0;
-        case PA1:
-        case PE1: return GPIO1;
-        case PA2:
-        case PD2: return GPIO2;
-        case PA3: return GPIO3;
-        case PD5: return GPIO5;
-        case PB6:
-        case PC6:
-        case PD6:
-        case PF6: return GPIO6;
-        case PB7:
-        case PC7:
-        case PE7:
-        case PF7: return GPIO7;
-        case PD8:
-        case PE8: return GPIO8;
-        case PA9:
-        case PD9:
-        case PG9: return GPIO9;
-        case PB10:
-        case PA10:
-        case PC10: return GPIO10;
-        case PB11:
-        case PC11: return GPIO11;
-        case PC12: return GPIO12;
-        case PG14: return GPIO14;
-        default: return 0xfffffff;
-    }
-}
-
-/* Return base register for each GPIO based on PIN name */
-static uint32_t
-pin_to_gpio(enum GPIO_PORT_PIN pin) {
-    switch (pin) {
-        case PA0:
-        case PA1:
-        case PA2:
-        case PA3:
-        case PA9:
-        case PA10:
-            return GPIOA;
-        case PB6:
-        case PB7:
-        case PB10:
-        case PB11:
-            return GPIOB;
-        case PC6:
-        case PC7:
-        case PC10:
-        case PC11:
-        case PC12:
-            return GPIOC;
-        case PD2:
-        case PD5:
-        case PD6:
-        case PD8:
-        case PD9:
-            return GPIOD;
-        case PE0:
-        case PE1:
-        case PE7:
-        case PE8:
-            return GPIOE;
-        case PF6:
-        case PF7:
-            return GPIOF;
-        case PG9:
-        case PG14:
-            return GPIOG;
-        default: return 0xfffffff;
-    }
-}
-
-/*
- * This maps a pin to its GPIO clock, since you have to enable
- * the GPIO clock for the port this takes care of that for us.
- */
-static uint32_t
-pin_to_enable(enum GPIO_PORT_PIN pin) {
-    switch (pin) {
-        case PA0:
-        case PA1:
-        case PA2:
-        case PA3:
-        case PA9:
-        case PA10: return RCC_AHB1ENR_IOPAEN;
-
-        case PB6:
-        case PB7:
-        case PB10:
-        case PB11: return RCC_AHB1ENR_IOPBEN;
-
-        case PC6:
-        case PC7:
-        case PC10:
-        case PC11:
-        case PC12: return RCC_AHB1ENR_IOPCEN;
-
-        case PD2:
-        case PD5:
-        case PD6:
-        case PD8:
-        case PD9: return RCC_AHB1ENR_IOPDEN;
-
-        case PE0:
-        case PE1:
-        case PE7:
-        case PE8: return RCC_AHB1ENR_IOPEEN;
-
-        case PF6:
-        case PF7: return RCC_AHB1ENR_IOPFEN;
-
-        case PG9:
-        case PG14: return RCC_AHB1ENR_IOPGEN;
-        default: return 0xfffffff;
-    }
-}
 
 /*
  * A number of attributes common to each USART/UART such as
@@ -696,14 +567,10 @@ uart_pin_map(enum GPIO_PORT_PIN pin, enum PIN_ATTRIBUTE attr) {
             return pin_uart_attr(pin, 2);
         case IRQ:
             return pin_uart_attr(pin, 3);
-        case BIT:
-            return pin_to_bit(pin);
-        case GPIO_ENA:
-            return pin_to_enable(pin);
         case AF:
             return pin_to_af(pin);
         default:
-            return pin_to_gpio(pin);
+            return 0;
     }
 }
 
