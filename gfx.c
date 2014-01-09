@@ -397,8 +397,8 @@ void gfx_drawChar(int16_t x, int16_t y, unsigned char c,
   glyph = &mcm_font[(c & 0x7f) * 9];
   if((x >= __gfx_state._width)            || // Clip right
      (y >= __gfx_state._height)           || // Clip bottom
-     ((x + 9 * size - 1) < 0) || // Clip left
-     ((y + 12 * size - 1) < 0))   // Clip top
+     ((x + 9 * size) < 0) || // Clip left
+     ((y + 12 * size) < 0))   // Clip top
     return;
 
   descender = (*glyph & 0x80) != 0;
@@ -418,7 +418,7 @@ void gfx_drawChar(int16_t x, int16_t y, unsigned char c,
     for (j = 0; j<8; j++) {
       if (line & 0x80) {
         if (size == 1) // default size
-          gfx_drawPixel(x+i, y+j, color);
+          gfx_drawPixel(x+j, y+i, color);
         else {  // big size
           gfx_fillRect(x+(j*size), y+(i*size), size, size, color);
         } 

@@ -24,6 +24,6 @@ ARFLAGS     = rcs
 
 SRCLIBDIR = .
 
-OBJS	= clock.o term.o uart.o sdio.o debug.o dump.o gfx.o gpio.o
+OBJS	= clock.o term.o uart.o sdio.o debug.o dump.o gfx.o gpio.o sdram.o
 
 include Makefile.include

@@ -307,10 +307,14 @@ void gpio_enable_clock(enum GPIO_PORT_PIN pin);
  * I'm on the fence about using GPIOA here from the 
  * libopencm3/stm32/gpio.h file.
  */
-#define gpio_base(pin) (GPIOA + ((((uint32_t)(pin) >> 4) & 0xf) << 10))
+#define gpio_base(x) (GPIOA + ((((uint32_t)(x) >> 4) & 0xf) << 10))
 
-#define set_gpio(pin) gpio_set(gpio_base(pin), gpio_bit(pin))
-#define clear_gpio(pin) gpio_clear(gpio_base(pin), gpio_bit(pin))
-#define toggle_gpio(pin) gpio_toggle(gpio_base(pin), gpio_bit(pin))
+#define set_gpio(x) gpio_set(gpio_base(x), gpio_bit(x))
+#define clear_gpio(x) gpio_clear(gpio_base(x), gpio_bit(x))
+#define toggle_gpio(x) gpio_toggle(gpio_base(x), gpio_bit(x))
 
+#define SDRAM_H
+#define SDRAM_BASE_ADDRESS ((uint8_t *)(0xd0000000))
+
+void sdram_init(void);
 #endif // cpa.h
