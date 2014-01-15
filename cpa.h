@@ -55,7 +55,7 @@ void msleep(uint32_t delay);
 uint32_t mtime(void);
 void clock_init(int enable_systick);
 void clock_init_heartbeat(int enable_systick, enum GPIO_PORT_PIN led);
-char *asctime(uint32_t millis);
+char *clock_asctime(uint32_t millis);
 
 /* 
  * Debugging functions

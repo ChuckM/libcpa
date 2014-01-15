@@ -92,7 +92,7 @@ clock_init_heartbeat(int systick_rate, enum GPIO_PORT_PIN led)
  * Uses a static buffer (not multi-thread friendly)
  */
 char *
-asctime(uint32_t t) {
+clock_asctime(uint32_t t) {
     static char time_string[14];
     uint16_t msecs = t % 1000;
     uint8_t secs = (t / 1000) % 60;
